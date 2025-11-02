@@ -1,5 +1,7 @@
 package org.emp.gl.core.launcher;
 
+import javax.swing.SwingUtilities;
+
 import org.emp.gl.clients.CompteARebours;
 import org.emp.gl.clients.Horloge;
 import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
@@ -10,27 +12,25 @@ public class App {
         testDuTimeService();
     }
 
-    private static void testDuTimeService() {
-    // Instancier le TimerService
-    TimerService timerService = new DummyTimeServiceImpl();
+   private static void testDuTimeService() {
+    TimerService timerService1 = new DummyTimeServiceImpl();
+    TimerService timerService2 = new DummyTimeServiceImpl();
+
+    // Interface graphique
+    SwingUtilities.invokeLater(() -> {
+        new HorlogeGUI(timerService1);
+    });
+      SwingUtilities.invokeLater(() -> {
+        new HorlogeGUI(timerService2);
+    });
     
-    // Instancier plusieurs horloges
-    Horloge horloge1 = new Horloge("Num 1", timerService);
-    Horloge horloge2 = new Horloge("Num 2", timerService);
-    
-    // Tester CompteARebours avec valeur 5
-    CompteARebours compte1 = new CompteARebours("Compte1", timerService, 5);
-    
-    // Instancier 10 CompteARebours avec valeurs aléatoires
-    java.util.Random random = new java.util.Random();
-    for (int i = 0; i < 2; i++) {
-        int valeurInitiale = 10 + random.nextInt(11); // 10-20
-        new CompteARebours("Compte-" + (i+2), timerService, valeurInitiale);
-    }
-    
+    // Console
+    Horloge horlogeConsole1 = new Horloge("Console", timerService1);
+        Horloge horlogeConsole2 = new Horloge("Console", timerService2);
+
     // Garder l'application en vie
     try {
-        Thread.sleep(30000); // Attendre 30 secondes
+        Thread.sleep(60000);
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
