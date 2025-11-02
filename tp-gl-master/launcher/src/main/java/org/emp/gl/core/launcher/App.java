@@ -1,7 +1,5 @@
 package org.emp.gl.core.launcher;
 
-import javax.swing.SwingUtilities;
-
 import org.emp.gl.clients.CompteARebours;
 import org.emp.gl.clients.Horloge;
 import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
@@ -12,25 +10,44 @@ public class App {
         testDuTimeService();
     }
 
-   private static void testDuTimeService() {
-    TimerService timerService1 = new DummyTimeServiceImpl();
-    TimerService timerService2 = new DummyTimeServiceImpl();
-
-    // Interface graphique
-    SwingUtilities.invokeLater(() -> {
-        new HorlogeGUI(timerService1);
-    });
-      SwingUtilities.invokeLater(() -> {
-        new HorlogeGUI(timerService2);
-    });
+   /*  private static void testDuTimeService() {
+        // Instancier le TimerService
+        TimerService timerService = new DummyTimeServiceImpl();
+        
+        // Instancier plusieurs horloges avec injection de dépendance
+        Horloge horloge1 = new Horloge("Num 1", timerService);
+        Horloge horloge2 = new Horloge("Num 2", timerService);
+        Horloge horloge3 = new Horloge("Num 3", timerService);
+        
+        Horloge horloge34 = new Horloge("Num 4", timerService);
+        // Garder l'application en vie pour voir les résultats
+        try {
+            Thread.sleep(10000); // Attendre 10 secondes
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }*/
+    private static void testDuTimeService() {
+    // Instancier le TimerService
+    TimerService timerService = new DummyTimeServiceImpl();
     
-    // Console
-    Horloge horlogeConsole1 = new Horloge("Console", timerService1);
-        Horloge horlogeConsole2 = new Horloge("Console", timerService2);
-
+    // Instancier plusieurs horloges
+    Horloge horloge1 = new Horloge("Num 1", timerService);
+    Horloge horloge2 = new Horloge("Num 2", timerService);
+    
+    // Tester CompteARebours avec valeur 5
+    CompteARebours compte1 = new CompteARebours("Compte1", timerService, 5);
+    
+    // Instancier 10 CompteARebours avec valeurs aléatoires
+    java.util.Random random = new java.util.Random();
+    for (int i = 0; i < 7; i++) {
+        int valeurInitiale = 10 + random.nextInt(11); // 10-20
+        new CompteARebours("Compte-" + (i+2), timerService, valeurInitiale);
+    }
+    
     // Garder l'application en vie
     try {
-        Thread.sleep(60000);
+        Thread.sleep(30000); // Attendre 30 secondes
     } catch (InterruptedException e) {
         e.printStackTrace();
     }

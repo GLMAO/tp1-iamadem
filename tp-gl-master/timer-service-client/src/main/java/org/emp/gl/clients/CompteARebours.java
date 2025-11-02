@@ -21,8 +21,7 @@ public class CompteARebours implements TimerChangeListener {
     }
 
     @Override
-    public void propertyChange(java.beans.PropertyChangeEvent evt) {
-        String prop = evt.getPropertyName();
+    public void propertyChange(String prop, Object oldValue, Object newValue) {
         if (!actif) return;
         
         // Décrémenter à chaque seconde
