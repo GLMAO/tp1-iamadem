@@ -25,11 +25,13 @@ public class Horloge implements TimerChangeListener {
                                 timerService.getSecondes());
     }
 
+
+
     @Override
-    public void propertyChange(String prop, Object oldValue, Object newValue) {
-        // Afficher l'heure seulement quand la seconde change
-        if (TimerChangeListener.SECONDE_PROP.equals(prop)) {
+public void propertyChange(java.beans.PropertyChangeEvent evt) {
+    String prop = evt.getPropertyName();
+    if (TimerChangeListener.SECONDE_PROP.equals(prop)) {
             afficherHeure();
-        }
-    }
+        }    
+}
 }
